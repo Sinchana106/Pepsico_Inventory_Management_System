@@ -1,0 +1,16 @@
+package com.cts.order.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.cts.order.model.OrderModel;
+
+public interface OrderService {
+	public List<OrderModel> fetchAllOrder(); 
+	public Optional<OrderModel> fetchOrderByOrderId(String orderId); 
+	public List<OrderModel> fetchAllOrderByUserId(String userId); 
+	public OrderModel saveOrder(OrderModel model);
+	public List<OrderModel> fetchAllPendingOrders();
+	public List<OrderModel> fetchAllCompletedOrdersWithinThreeHours();
+	public List<OrderModel> fetchTop5OrdersWithinThreeHours();
+}
