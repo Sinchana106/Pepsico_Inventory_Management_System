@@ -1,29 +1,25 @@
 
 package com.cts.authentication.service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.cts.authentication.model.User;
+import com.cts.authentication.model.MyUser;
 import com.cts.authentication.repository.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository repo;
-	@Override
-	public User registerUser(User user) {
-		String userid=randomGenerator();
-		user.setUserid(userid);
-		user.setUsertype("Customer");
-		return repo.save(user);
-	}
-
+	
 	@Override
 	public boolean loginUser(String username, String password) {
-		Optional<User> user = repo.findByNameAndPassword(username, password);
+		Optional<User> user = repo.findByUsernameAndPassword(username, password);
 		if(user.isPresent()) {
 			return true;
 		}
@@ -34,7 +30,7 @@ public class UserServiceImpl implements UserService {
 		int n = 100 + (int)(Math.random() * ((999 - 100) + 1));
 		String uid="R-" + n;
 		while(true) {
-			Optional<User> id = repo.findById(uid);
+			Optional<MyUser> id = repo.findById(uid);
 			if(id.isPresent()) {
 				 n = 100 + (int)(Math.random() * ((999 - 100) + 1));
 				 uid="R-" + n;
@@ -55,4 +51,19 @@ public class UserServiceImpl implements UserService {
 			}
 		return true;
 	}
+
+@Override
+public UserDetails loadByUserName(String username) {
+	MyUser myUser=repo.findByUsername(username);
+	return new User(myUser.getUserName(), myUser.getPassword(), new ArrayList<>());
+}
+
+@Override
+public MyUser registerUser(MyUser user) {
+	String userid=randomGenerator();
+	user.setUserid(userid);
+	user.setUsertype("Customer");
+	return repo.save(user);
+}
+
 }

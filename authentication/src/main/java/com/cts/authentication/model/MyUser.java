@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -21,13 +20,13 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "user")
-public class User {
+public class MyUser {
 	@Id
 	private String userid;
 	@Column
 	@NotNull
 	@Pattern(regexp = "^[a-zA-Z ]{5,8}$", message = "User name should contain only alphabets with minimum 5 characters, maximum 8 characters")
-	private String name;
+	private String username;
 	@Column
 	@Email(message = "Invalid Email address, please match the email format as xyz@xyz.com")
 	private String emailaddress;
@@ -36,10 +35,9 @@ public class User {
 	@Size(min = 10, max = 10, message = "Please provide 10 digit contact number")
 	private String contactno;
 	@Column
-	@Past
+	//@Past
 	private Date dob;
 	@Column
-	@NotNull
 	private String usertype;
 	@Column
 	@NotNull
@@ -60,12 +58,12 @@ public class User {
 		return userid;
 	}
 
-	public String getName() {
-		return name;
+	public String getUserName() {
+		return username;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUserName(String username) {
+		this.username = username;
 	}
 
 	public String getEmailaddress() {
@@ -108,15 +106,15 @@ public class User {
 		this.password = password;
 	}
 
-	public User(String userid,
-			@NotNull @Pattern(regexp = "^[a-zA-Z ]{5,8}$", message = "User name should contain only alphabets with minimum 5 characters, maximum 8 characters") String name,
-			@Email(message = "Invalid Email address, please match the email format as xyz@xyz.com") String emailaddress,
-			@NotNull @Size(min = 10, max = 10, message = "Please provide 10 digit contact number") String contactno,
-			@Past Date dob, @NotNull String usertype,
-			@NotNull @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Password should be greater than 8 characters long and should contain atleast one uppercase,one numeric and a special character") String password) {
+	public MyUser(String userid,
+			 String username,
+			 String emailaddress,
+			 String contactno,
+			 Date dob,  String usertype,
+			 String password) {
 		super();
 		this.userid = userid;
-		this.name = name;
+		this.username = username;
 		this.emailaddress = emailaddress;
 		this.contactno = contactno;
 		this.dob = dob;
@@ -124,9 +122,11 @@ public class User {
 		this.password = password;
 	}
 
-	public User() {
+	public MyUser() {
 		super();
 	}
+
+	
 	
 
 }

@@ -1,12 +1,17 @@
 
 package com.cts.authentication.service;
 
-import com.cts.authentication.model.User;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.cts.authentication.model.MyUser;
 
 public interface UserService {
 
-	public User registerUser(User user);
-	public boolean loginUser(String username,String password);
+	public UserDetails loadByUserName(String username);
+
+	public MyUser registerUser(MyUser user);
+
+	public boolean loginUser(String username, String password);
+
 	public boolean validateUserName(String name);
 }
-
