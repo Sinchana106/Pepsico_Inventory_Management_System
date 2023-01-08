@@ -13,7 +13,6 @@ import org.springframework.data.couchbase.core.mapping.Field;
 public class OrderModel {
 
 	@Id
-	@NotNull(message = "Order Id cannot be blank")
 	@Field(name="OrderId")
 	private String orderId;
 	

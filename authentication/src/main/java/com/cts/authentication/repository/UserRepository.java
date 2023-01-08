@@ -14,7 +14,8 @@ import com.cts.authentication.model.MyUser;
 public interface UserRepository extends JpaRepository<MyUser, String> {
 	@Query
 	public Optional<User> findByUsernameAndPassword(String username, String password);
-
+	
+	
 	@Query
 	public MyUser findByUsername(String username);
 }

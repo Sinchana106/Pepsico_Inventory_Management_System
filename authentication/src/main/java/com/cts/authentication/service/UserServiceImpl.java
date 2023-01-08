@@ -66,4 +66,5 @@ public MyUser registerUser(MyUser user) {
 	return repo.save(user);
 }
 
+
 }

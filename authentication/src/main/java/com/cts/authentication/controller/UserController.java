@@ -1,5 +1,7 @@
 package com.cts.authentication.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -35,6 +37,8 @@ public class UserController {
 	
 	@Autowired
 	private JwtUtil jwtUtil;
+	
+	
 	
 	@PostMapping("/register")
 	public  ResponseEntity<MyUser> registerUser(@Valid @RequestBody MyUser user) throws InternalServerException {
@@ -112,5 +116,5 @@ public class UserController {
 			}
 		}
 	}
-
+	
 }
