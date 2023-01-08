@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cts.order.feign.InventoryFeign;
@@ -30,15 +32,15 @@ public class OrderController {
 		return service.fetchAllOrder();
 	}
 	
-	@PostMapping
+	@PostMapping("/getDetails")
 	public String saveOrder(@RequestBody OrderModel model) {
 		InventoryModel inventoryModel=inventoryFeign.getByLocationNbrandMaterialId(model.getLocationNbr(), model.getMaterialId());
 		int availableQty=inventoryModel.getAvailableQty();
 		int orderQty=model.getOrderQty();
 		if(availableQty>=orderQty) {
 			availableQty-=orderQty;
-			inventoryModel.setAvailableQty(availableQty);
-			inventoryModel.setOrderQty(inventoryModel.getOrderQty()+orderQty);
+			//inventoryModel.setAvailableQty(availableQty);
+			//inventoryModel.setOrderQty(inventoryModel.getOrderQty()+orderQty);
 			service.saveOrder(model);
 			return "Order Saved Successfully";
 		}
@@ -57,15 +59,9 @@ public class OrderController {
 		return service.fetchAllCompletedOrdersWithinThreeHours();
 	}
 	
-	
-//	@PostMapping("/sendMail")
-//	public String
-//	sendMail()
-//	{
-//		String status
-//			= emailService.sendSimpleMail();
-//
-//		return status;
+//	@GetMapping("/getDetails")
+//	public InventoryModel getByLocationNbrAndMaterialId(@RequestParam int locationNbr,@RequestParam String materialId) {
+//		 return inventoryFeign.getByLocationNbrandMaterialId(locationNbr,materialId);
 //	}
-	
+
 }

@@ -68,9 +68,9 @@ public class InventoryController {
 		return service.getInventoryByLocationNbr(locationNbr);
 	}
 	
-	@GetMapping("/getDetails")
+	@GetMapping("/{locationNbr}/{materialId}")
 	@ResponseStatus(HttpStatus.OK)
-	public InventoryModel getByLocationNbrandMaterialId(@RequestParam int locationNbr, @RequestParam String materialId){
+	public InventoryModel getByLocationNbrAndMaterialId(@PathVariable int locationNbr,@PathVariable String materialId) {
 		return service.getInventoryByMaterialIdandLocationNbr(locationNbr, materialId);
 	}
 	
