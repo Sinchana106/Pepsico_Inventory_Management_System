@@ -62,7 +62,7 @@ public UserDetails loadByUserName(String username) {
 public MyUser registerUser(MyUser user) {
 	String userid=randomGenerator();
 	user.setUserid(userid);
-	user.setUsertype("Customer");
+	user.setUsertype("User");
 	return repo.save(user);
 }
 
