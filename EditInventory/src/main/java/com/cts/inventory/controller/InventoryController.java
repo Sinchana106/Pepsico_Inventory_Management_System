@@ -30,7 +30,7 @@ public class InventoryController {
 	@Autowired
 	private InventoryServiceImpl service;
 
-	@PostMapping
+	@PostMapping("/saveInventory")
 	@ResponseStatus(HttpStatus.CREATED)
 	public InventoryModel saveInventory(@RequestBody @Valid InventoryModel model) throws InternalServerException {
 		
