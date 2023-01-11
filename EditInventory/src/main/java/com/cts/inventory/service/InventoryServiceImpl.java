@@ -49,13 +49,13 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	public InventoryModel resetInventoryQty(int id, int resetQty) throws Exception {
-		InventoryModel inventory = repo.findById(id).get();
-		int aQty = inventory.getAvailableQty();
-		inventory.setAvailableQty(aQty + resetQty);
-		inventory.setResetQty(inventory.getResetQty() + resetQty);
-		inventory.setUpdateDateTime(LocalDateTime.now());
-		return repo.save(inventory);
+	public InventoryModel resetInventoryQty( int locationNbr,String materialId,InventoryModel inventory) throws Exception {
+		InventoryModel model=getInventoryByMaterialIdandLocationNbr(locationNbr,materialId);
+		int aQty = model.getAvailableQty();
+		model.setAvailableQty(aQty + inventory.getResetQty());
+		model.setResetQty(inventory.getResetQty());
+		model.setUpdateDateTime(LocalDateTime.now());
+		return repo.save(model);
 	}
 
 	@Override

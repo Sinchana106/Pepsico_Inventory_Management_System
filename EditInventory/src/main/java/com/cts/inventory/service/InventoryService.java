@@ -10,8 +10,8 @@ public interface InventoryService {
 	public InventoryModel saveInventory(InventoryModel model);
 	public List<InventoryModel> getAllInventory();
 	public Optional<InventoryModel> getInventoryById(int id);
-	public InventoryModel getInventoryByMaterialIdandLocationNbr(int locationNbr,String materialId);
+	public InventoryModel getInventoryByMaterialIdandLocationNbr(int locationNbr, String materialId);
 	public List<InventoryModel> getInventoryByLocationNbr(int locationNbr);
-	public InventoryModel resetInventoryQty(int id,int resetQty) throws Exception;
+	public InventoryModel resetInventoryQty(int locationNbr,String materialId,InventoryModel model) throws Exception;
 	public String deleteInventoryById(int id);
 }
