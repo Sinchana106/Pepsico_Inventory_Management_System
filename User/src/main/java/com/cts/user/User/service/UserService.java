@@ -57,6 +57,7 @@ public class UserService {
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(role);
         user.setRole(userRoles);
+        System.out.println(userRoles);
         user.setUserPassword(getEncodedPassword(user.getUserPassword()));
 
         return userDao.save(user);
