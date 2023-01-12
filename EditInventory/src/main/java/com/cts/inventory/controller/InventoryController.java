@@ -23,7 +23,7 @@ import com.cts.inventory.model.InventoryModel;
 import com.cts.inventory.service.InventoryServiceImpl;
 
 @RestController
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("*")
 public class InventoryController {
 	@Autowired
 	private InventoryServiceImpl service;
@@ -59,10 +59,16 @@ public class InventoryController {
 	public List<InventoryModel> getByLocationNbr(@PathVariable int locationNbr) {
 		return service.getInventoryByLocationNbr(locationNbr);
 	}
-
+	
+	@GetMapping("resetInventory/{locationNbr}/{materialId}")
+	@ResponseStatus(HttpStatus.OK)
+	public InventoryModel getByLocationNbrAndMaterialId(@PathVariable int locationNbr, @PathVariable String materialId) {
+		return service.getInventoryByMaterialIdandLocationNbr(locationNbr, materialId);
+	}
+	
 	@PutMapping("resetInventory/{locationNbr}/{materialId}")
 	@ResponseStatus(HttpStatus.OK)
-	public InventoryModel getByLocationNbrAndMaterialId(@PathVariable int locationNbr, @PathVariable String materialId,
+	public InventoryModel resetInventory(@PathVariable int locationNbr, @PathVariable String materialId,
 			@RequestBody InventoryModel response) throws Exception {
 		return service.resetInventoryQty(locationNbr, materialId, response);
 	}

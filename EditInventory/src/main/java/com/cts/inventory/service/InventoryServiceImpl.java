@@ -53,7 +53,7 @@ public class InventoryServiceImpl implements InventoryService {
 		InventoryModel model=getInventoryByMaterialIdandLocationNbr(locationNbr,materialId);
 		int aQty = model.getAvailableQty();
 		model.setAvailableQty(aQty + inventory.getResetQty());
-		model.setResetQty(inventory.getResetQty());
+		model.setResetQty(inventory.getResetQty()+model.getResetQty());
 		model.setUpdateDateTime(LocalDateTime.now());
 		return repo.save(model);
 	}
