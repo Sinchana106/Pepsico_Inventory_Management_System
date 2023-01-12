@@ -15,4 +15,10 @@ public interface OrderRepository extends CouchbaseRepository<OrderModel, String>
 	
 	@View
 	public List<OrderModel> findAllByOrderStatusAndOrderDateTimeGreaterThan(String orderStatus,LocalDateTime orderDateTime);
+	
+	@View
+	public OrderModel findByLocationNbrAndMaterialId(int locationNbr,String materialId);
+	
+	@View
+	public OrderModel findByLocationNbrAndMaterialIdAndOrderId(int locationNbr,String materialId,String orderId);
 }

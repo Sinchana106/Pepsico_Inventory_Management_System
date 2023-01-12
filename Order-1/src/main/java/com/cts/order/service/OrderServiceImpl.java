@@ -7,13 +7,18 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cts.order.feign.InventoryFeign;
 import com.cts.order.model.OrderModel;
+import com.cts.order.pojo.InventoryModel;
 import com.cts.order.repository.OrderRepository;
 @Service
 public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderRepository repo;
+	
+	@Autowired
+	private InventoryFeign inventoryFeign;
 	
 	int n=1;
 	@Override
@@ -22,7 +27,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public OrderModel saveOrder(OrderModel model) {
+	public OrderModel saveOrder(int locationNbr,String materialId,int orderQty) {
 		String id="O-"+n;
 		while(true) {
 			
@@ -35,12 +40,25 @@ public class OrderServiceImpl implements OrderService {
 				break;
 			}
 		}
+		InventoryModel inventoryModel=inventoryFeign.getByLocationNbrAndMaterialId(locationNbr,materialId);
+		OrderModel model =new OrderModel();
+		if(inventoryModel.getAvailableQty()>=orderQty) {
 		model.setOrderId(id);
+		model.setLocationNbr(locationNbr);
+		model.setMaterialId(materialId);
+		model.setMaterialName(inventoryModel.getMaterialName());
+		model.setOrderQty(orderQty);
 		model.setOrderDateTime(LocalDateTime.now());
 		model.setOrderStatus("InProgress");
+		inventoryFeign.updateAvailbaleqty(locationNbr, materialId, orderQty);
 		n++;
 		System.out.println(model.toString());
+		
 		return repo.save(model);
+		}
+		else {
+			return null;
+		}
 		
 	}
 
@@ -60,13 +78,36 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Optional<OrderModel> fetchOrderByOrderId(String orderId) {
-		return repo.findById(orderId);
+	public OrderModel fetchOrderByOrderId(String orderId) {
+		OrderModel order=new OrderModel();
+		return repo.findById(orderId).get();
 	}
 
 	@Override
 	public List<OrderModel> fetchTop5OrdersWithinThreeHours() {
 		return null;
 	}
+
+	@Override
+	public OrderModel sendOrderQuantityToInventoryTable(int locationNbr, String materialId, int orderQty) {
+		return null;
+	}
+
+
+	
+	@Override
+	public OrderModel processOrder(String orderId, OrderModel response) {
+			OrderModel model=repo.findById(orderId).get();
+			model.setOrderStatus(response.getOrderStatus());
+			model.setOrderDateTime(LocalDateTime.now());
+			return repo.save(model);
+		}
+
+	@Override
+	public OrderModel fetchOrderByLocationNbrMaterialIdOrderId(int locationNbr, String materialId, String orderId) {
+		return repo.findByLocationNbrAndMaterialIdAndOrderId(locationNbr, materialId, orderId);
+	}
+	
+
 
 }

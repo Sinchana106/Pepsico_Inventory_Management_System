@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpServerErrorException.InternalServerError;
@@ -71,6 +72,14 @@ public class InventoryController {
 	public InventoryModel resetInventory(@PathVariable int locationNbr, @PathVariable String materialId,
 			@RequestBody InventoryModel response) throws Exception {
 		return service.resetInventoryQty(locationNbr, materialId, response);
+	}
+	
+	@PutMapping("updateAvailableQty/{locationNbr}/{materialId}")
+	@ResponseStatus(HttpStatus.OK)
+	 public boolean updateAvailbaleqty(@PathVariable int locationNbr, @PathVariable String materialId, @RequestParam("quantity") int qnty) {
+	  
+	  	return service.updateOrderAndAvailableQuantity(locationNbr, materialId, qnty);
+
 	}
 
 }

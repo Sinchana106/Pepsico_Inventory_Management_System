@@ -8,7 +8,9 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cts.inventory.feign.OrderFeign;
 import com.cts.inventory.model.InventoryModel;
+import com.cts.inventory.pojo.OrderModel;
 import com.cts.inventory.repository.InventoryRepository;
 
 @Service
@@ -16,6 +18,9 @@ public class InventoryServiceImpl implements InventoryService {
 
 	@Autowired
 	private InventoryRepository repo;
+	
+	@Autowired
+	//private OrderFeign orderFeign;
 
 	public int randomGenerator() {
 		Random random = new Random();
@@ -79,5 +84,22 @@ public class InventoryServiceImpl implements InventoryService {
 	public Optional<InventoryModel> getInventoryById(int id) {
 		return repo.findById(id);
 	}
+
+	@Override
+	public boolean updateOrderAndAvailableQuantity(int locationNbr,String materialId,int orderQty) {
+		System.out.println("in to this method");
+		  InventoryModel inv = repo.findByLocationNbrAndMaterialId(locationNbr, materialId);
+		  inv.setOrderQty(inv.getOrderQty()+orderQty);
+		  inv.setAvailableQty(inv.getAvailableQty()-orderQty);
+		  InventoryModel invavail = repo.save(inv);
+		  if(invavail == null)
+		  	{
+
+		  			return false;
+		  	}
+		  		return true;
+		}
+
+	
 
 }
