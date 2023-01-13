@@ -15,4 +15,6 @@ public interface InventoryService {
 	public InventoryModel resetInventoryQty(int locationNbr,String materialId,InventoryModel model) throws Exception;
 	public String deleteInventoryById(int id);
 	public boolean updateOrderAndAvailableQuantity(int locationNbr,String materialId,int orderQty);
+	public boolean isInventoryPresent(int locationNbr,String materialId);
+	public boolean updateOrderAndAvailableQuantityAfterCancelation(int locationNbr,String materialId,int orderQty);
 }

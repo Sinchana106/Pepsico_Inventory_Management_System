@@ -89,6 +89,7 @@ public class InventoryServiceImpl implements InventoryService {
 	public boolean updateOrderAndAvailableQuantity(int locationNbr,String materialId,int orderQty) {
 		System.out.println("in to this method");
 		  InventoryModel inv = repo.findByLocationNbrAndMaterialId(locationNbr, materialId);
+		  
 		  inv.setOrderQty(inv.getOrderQty()+orderQty);
 		  inv.setAvailableQty(inv.getAvailableQty()-orderQty);
 		  InventoryModel invavail = repo.save(inv);
@@ -99,6 +100,33 @@ public class InventoryServiceImpl implements InventoryService {
 		  	}
 		  		return true;
 		}
+
+	@Override
+	public boolean isInventoryPresent(int locationNbr, String materialId) {
+		boolean isPresent=false;
+		InventoryModel inventoryModel=repo.findByLocationNbrAndMaterialId(locationNbr, materialId);
+		if(inventoryModel!=null) {
+			isPresent=true;
+		}
+		return isPresent;
+	}
+
+	@Override
+	public boolean updateOrderAndAvailableQuantityAfterCancelation(int locationNbr, String materialId, int orderQty) {
+		System.out.println("in to this method");
+		  InventoryModel inv = repo.findByLocationNbrAndMaterialId(locationNbr, materialId);
+		  
+		  inv.setOrderQty(inv.getOrderQty()-orderQty);
+		  inv.setAvailableQty(inv.getAvailableQty()+orderQty);
+		  InventoryModel invavail = repo.save(inv);
+		  if(invavail == null)
+		  	{
+
+		  			return false;
+		  	}
+		  		return true;
+		}
+	
 
 	
 

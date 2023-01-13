@@ -6,11 +6,13 @@ import com.cts.user.User.entity.Role;
 import com.cts.user.User.entity.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -66,4 +68,34 @@ public class UserService {
     public String getEncodedPassword(String password) {
         return passwordEncoder.encode(password);
     }
+    
+    public boolean isUserPresent(User user) {
+    	boolean userExists=false;
+    	User existingUserName=userDao.findByUserName(user.getUserName());
+    	if(existingUserName!=null) {
+    		return true;
+    	}
+    	User existingUserMobile=userDao.findByContact(user.getContact());
+    	if(existingUserMobile!=null) {
+    		return true;
+    	}
+    	return userExists;
+    }
+    
+    public List<User> getUsers(){
+    	return userDao.findAll();
+    }
+    
+    public User fetchByUserNameAndPassword(String userName,String password) {
+    	return userDao.findByUserNameAndUserPassword(userName, password);
+    }
+
+	public List<User> getAllUsers() {
+		// TODO Auto-generated method stub
+		return userDao.findAll();
+	}
+
+	public User getUsersById(String userName) {
+		return userDao.findByUserName(userName);
+	}
 }

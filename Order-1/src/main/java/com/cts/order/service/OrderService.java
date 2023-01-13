@@ -12,7 +12,7 @@ public interface OrderService {
 
 	public List<OrderModel> fetchAllOrderByUserId(String userId);
 
-	public OrderModel saveOrder(int locationNbr,String materialId,int orderQty);
+	public OrderModel saveOrder(int locationNbr, String materialId, int orderQty);
 
 	public List<OrderModel> fetchAllPendingOrders();
 
@@ -21,8 +21,10 @@ public interface OrderService {
 	public List<OrderModel> fetchTop5OrdersWithinThreeHours();
 
 	public OrderModel sendOrderQuantityToInventoryTable(int locationNbr, String materialId, int orderQty);
-	
+
 	public OrderModel processOrder(String orderId, OrderModel response);
-	
-	public OrderModel fetchOrderByLocationNbrMaterialIdOrderId(int locationNbr,String materialId,String orderId);
+
+	public OrderModel fetchOrderByLocationNbrMaterialIdOrderId(int locationNbr, String materialId, String orderId);
+
+	public void cancelOrder(String id);
 }

@@ -98,14 +98,35 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public OrderModel processOrder(String orderId, OrderModel response) {
 			OrderModel model=repo.findById(orderId).get();
-			model.setOrderStatus(response.getOrderStatus());
+			if(response.getOrderStatus()=="Completed") {
+			model.setOrderStatus("Completed");
+			}
+			else {
+				model.setOrderStatus("Canceled");
+				cancelOrder(response.getOrderId());
+			}
 			model.setOrderDateTime(LocalDateTime.now());
+			
 			return repo.save(model);
 		}
 
 	@Override
 	public OrderModel fetchOrderByLocationNbrMaterialIdOrderId(int locationNbr, String materialId, String orderId) {
 		return repo.findByLocationNbrAndMaterialIdAndOrderId(locationNbr, materialId, orderId);
+	}
+
+	@Override
+	public void cancelOrder(String id) {
+		   OrderModel ord=repo.findById(id).get();
+//	        InventoryModel inven=inventoryFeign.getByLocationNbrAndMaterialId(ord.getLocationNbr(), ord.getMaterialId());
+//	        InventoryModel inventory= new InventoryModel();
+//	        inventory.setId(inven.getId());
+//	        inventory.setLocationNbr(inven.getLocationNbr());
+//	        inventory.setMaterialId(inven.getMaterialId());
+//	        inventory.setOrderQty(inven.getOrderQty()-ord.getOrderQty());
+//	        inventory.setUpdateDateTime(inven.getUpdateDateTime());
+//	      	//write logic to send inventory model to inventory controller
+		   inventoryFeign.updateAvailbaleqtyAfterCancel(ord.getLocationNbr(), ord.getMaterialId(), ord.getOrderQty());
 	}
 	
 

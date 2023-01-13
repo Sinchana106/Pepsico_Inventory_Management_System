@@ -13,17 +13,20 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.cts.order.pojo.InventoryModel;
 import com.cts.order.pojo.UserCredentials;
 
-@FeignClient(name="inventory-service",url="http://localhost:8081")
+@FeignClient(name = "inventory-service", url = "http://localhost:8081")
 public interface InventoryFeign {
 
 	@GetMapping("/resetInventory/{locationNbr}/{materialId}")
 	@ResponseStatus(HttpStatus.OK)
-	public InventoryModel getByLocationNbrAndMaterialId(@PathVariable int locationNbr,@PathVariable String materialId);
-	
-
-	
+	public InventoryModel getByLocationNbrAndMaterialId(@PathVariable int locationNbr, @PathVariable String materialId);
 
 	@PutMapping("/updateAvailableQty/{locationNbr}/{materialId}")
 	@ResponseStatus(HttpStatus.OK)
-	 public boolean updateAvailbaleqty(@PathVariable int locationNbr, @PathVariable String materialId, @RequestParam("quantity") int qnty);
+	public boolean updateAvailbaleqty(@PathVariable int locationNbr, @PathVariable String materialId,
+			@RequestParam("quantity") int qnty);
+
+	@PutMapping("updateAvailableQtyAfterCancel/{locationNbr}/{materialId}")
+	@ResponseStatus(HttpStatus.OK)
+	public boolean updateAvailbaleqtyAfterCancel(@PathVariable int locationNbr, @PathVariable String materialId,
+			@RequestParam("quantity") int qnty);
 }

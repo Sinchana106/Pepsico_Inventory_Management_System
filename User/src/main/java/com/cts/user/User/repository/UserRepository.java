@@ -1,9 +1,14 @@
 package com.cts.user.User.repository;
 
-import com.cts.user.User.entity.User;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.cts.user.User.entity.User;
+
 @Repository
-public interface UserRepository extends CrudRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, String> {
+	
+	public User findByUserName(String userName);
+	public User findByContact(String contact);
+	public User findByUserNameAndUserPassword(String userName,String userPassword);
 }

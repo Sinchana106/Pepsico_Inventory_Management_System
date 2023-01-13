@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -15,12 +16,19 @@ import javax.persistence.ManyToMany;
 public class User {
 
     @Id
+    @Column(nullable = false)
     private String userName;
+    @Column(nullable = false)
     private String userFirstName;
+    @Column(nullable = false)
     private String userLastName;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String contact;
+    @Column(nullable = false)
     private String userPassword;
+    @Column(nullable = false)
     private Date dob;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USER_ROLE",
