@@ -1,7 +1,5 @@
 package com.cts.order.model;
 
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -18,7 +16,7 @@ public class OrderModel {
 	
 	
 	@Field(name="OrderDateTime")
-	private LocalDateTime orderDateTime;
+	private String orderDateTime;
 	
 	@NotNull(message = "Location number cannot be blank")
 	@Min(value =6  ,message= "Location number should contain 6 digits")
@@ -52,11 +50,11 @@ public class OrderModel {
 		this.orderId = orderId;
 	}
 
-	public LocalDateTime getOrderDateTime() {
+	public String getOrderDateTime() {
 		return orderDateTime;
 	}
 
-	public void setOrderDateTime(LocalDateTime orderDateTime) {
+	public void setOrderDateTime(String orderDateTime) {
 		this.orderDateTime = orderDateTime;
 	}
 
@@ -108,7 +106,7 @@ public class OrderModel {
 		this.userId = userId;
 	}
 
-	public OrderModel(@NotNull(message = "Order Id cannot be blank") String orderId, LocalDateTime orderDateTime,
+	public OrderModel(@NotNull(message = "Order Id cannot be blank") String orderId, String orderDateTime,
 			@NotNull(message = "Location number cannot be blank") @Min(value = 6, message = "Location number should contain 6 digits") int locationNbr,
 			@NotNull(message = "Material Id cannot be blank") @Size(min = 10, max = 10, message = "Material Id should contain 10 digits") String materialId,
 			String materialName, @NotNull(message = "Order quantity cannot be blank") @Min(1) int orderQty,

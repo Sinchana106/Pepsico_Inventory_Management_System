@@ -1,6 +1,7 @@
 package com.cts.inventory.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -40,7 +41,10 @@ public class InventoryController {
 			if(service.isInventoryPresent(locatioNbr, materialId)) {
 				throw new InventoryAlreadyExist("Inventory with same Location number and Material Id already added");
 			}else {
-			model.setResetDateTime(LocalDateTime.now());
+				LocalDateTime dateTime=LocalDateTime.now();
+				  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+				  String format = dateTime.format(formatter);
+			model.setResetDateTime(format);
 			service.saveInventory(model);
 			return model;}
 		} catch (InternalServerError | NullPointerException e) {

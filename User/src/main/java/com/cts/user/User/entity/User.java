@@ -16,19 +16,19 @@ import javax.persistence.ManyToMany;
 public class User {
 
     @Id
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String userName;
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String userFirstName;
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String userLastName;
-    @Column(nullable = false)
+   // @Column(nullable = false)
     private String email;
-    @Column(nullable = false)
+   // @Column(nullable = false)
     private String contact;
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String userPassword;
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private Date dob;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USER_ROLE",

@@ -33,25 +33,25 @@ public class UserController {
 
     @PostMapping({"/registerNewUser"})
     public ResponseEntity<User> registerNewUser(@RequestBody User user) throws Exception {
-    	if(userService.isUserPresent(user)) {
-    		throw new Exception("User already registered");
-    	}
-    	if(user.getUserFirstName()!=null) {
-    		throw new Exception("User's First Name cannot be empty");
-    	}
-    	if(user.getUserLastName()!=null) {
-    		throw new Exception("User's Last Name cannot be empty");
-    	}	
-    	if(user.getContact()!=null) {
-    		throw new Exception("User's Contact number cannot be empty");
-    	}
-    	if(user.getDob()!=null) {
-    		throw new Exception("User's DOB number cannot be empty");
-    	}
-    
-      if(user.getUserPassword()!=null) {
-    	  throw new Exception("User's Password number cannot be empty");
-	}
+//    	if(userService.isUserPresent(user)) {
+//    		throw new Exception("User already registered");
+//    	}
+//    	if(user.getUserFirstName()!=null) {
+//    		throw new Exception("User's First Name cannot be empty");
+//    	}
+//    	if(user.getUserLastName()!=null) {
+//    		throw new Exception("User's Last Name cannot be empty");
+//    	}	
+//    	if(user.getContact()!=null) {
+//    		throw new Exception("User's Contact number cannot be empty");
+//    	}
+//    	if(user.getDob()!=null) {
+//    		throw new Exception("User's DOB number cannot be empty");
+//    	}
+//    
+//      if(user.getUserPassword()!=null) {
+//    	  throw new Exception("User's Password number cannot be empty");
+//	}
         return new ResponseEntity<User> (userService.registerNewUser(user),HttpStatus.CREATED);
     }
 

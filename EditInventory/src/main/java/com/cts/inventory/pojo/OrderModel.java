@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class OrderModel {
 	private String orderId;
-	private LocalDateTime orderDateTime;
+	private String orderDateTime;
 	private int locationNbr;
 	private String materialId;
 	private String materialName;
@@ -16,10 +16,10 @@ public class OrderModel {
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
-	public LocalDateTime getOrderDateTime() {
+	public String getOrderDateTime() {
 		return orderDateTime;
 	}
-	public void setOrderDateTime(LocalDateTime orderDateTime) {
+	public void setOrderDateTime(String orderDateTime) {
 		this.orderDateTime = orderDateTime;
 	}
 	public int getLocationNbr() {

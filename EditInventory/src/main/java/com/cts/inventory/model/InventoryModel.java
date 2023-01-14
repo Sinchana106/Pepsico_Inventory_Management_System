@@ -31,9 +31,9 @@ public class InventoryModel {
 	@Field(name = "ResetQty")
 	private int resetQty;
 	@Field(name = "ResetDateTime")
-	private LocalDateTime resetDateTime;
+	private String resetDateTime;
 	@Field(name = "UpdateDateTime")
-	private LocalDateTime updateDateTime;
+	private String updateDateTime;
 	@Field(name = "AvailableQuantity")
 	private int availableQty;
 	@Field(name = "OrderQty")
@@ -43,7 +43,7 @@ public class InventoryModel {
 			@NotNull @Pattern(regexp = "^[0-9]{10}$", message = "MaterialId should have length of 10 Digits.") String materialId,
 			String materialName,
 			@Max(value = 1000, message = "Reset quantity should not be greater than 1000") int resetQty,
-			LocalDateTime resetDateTime, LocalDateTime updateDateTime, int availableQty, int orderQty) {
+			String resetDateTime, String updateDateTime, int availableQty, int orderQty) {
 		super();
 		this.id = id;
 		this.locationNbr = locationNbr;
@@ -88,16 +88,16 @@ public class InventoryModel {
 	public void setResetQty(int resetQty) {
 		this.resetQty = resetQty;
 	}
-	public LocalDateTime getResetDateTime() {
+	public String getResetDateTime() {
 		return resetDateTime;
 	}
-	public void setResetDateTime(LocalDateTime resetDateTime) {
+	public void setResetDateTime(String resetDateTime) {
 		this.resetDateTime = resetDateTime;
 	}
-	public LocalDateTime getUpdateDateTime() {
+	public String getUpdateDateTime() {
 		return updateDateTime;
 	}
-	public void setUpdateDateTime(LocalDateTime updateDateTime) {
+	public void setUpdateDateTime(String updateDateTime) {
 		this.updateDateTime = updateDateTime;
 	}
 	public int getAvailableQty() {

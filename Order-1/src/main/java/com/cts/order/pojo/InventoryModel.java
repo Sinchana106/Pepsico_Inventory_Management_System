@@ -20,9 +20,9 @@ public class InventoryModel {
 	
 	private int resetQty;
 	
-	private LocalDateTime resetDateTime;
+	private String resetDateTime;
 	
-	private LocalDateTime updateDateTime;
+	private String updateDateTime;
 	
 	private int availableQty;
 	
@@ -68,19 +68,19 @@ public class InventoryModel {
 		this.resetQty = resetQty;
 	}
 
-	public LocalDateTime getResetDateTime() {
+	public String getResetDateTime() {
 		return resetDateTime;
 	}
 
-	public void setResetDateTime(LocalDateTime resetDateTime) {
+	public void setResetDateTime(String resetDateTime) {
 		this.resetDateTime = resetDateTime;
 	}
 
-	public LocalDateTime getUpdateDateTime() {
+	public String getUpdateDateTime() {
 		return updateDateTime;
 	}
 
-	public void setUpdateDateTime(LocalDateTime updateDateTime) {
+	public void setUpdateDateTime(String updateDateTime) {
 		this.updateDateTime = updateDateTime;
 	}
 

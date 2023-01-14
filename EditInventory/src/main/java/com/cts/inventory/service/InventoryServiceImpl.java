@@ -1,6 +1,7 @@
 package com.cts.inventory.service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -58,8 +59,11 @@ public class InventoryServiceImpl implements InventoryService {
 		InventoryModel model=getInventoryByMaterialIdandLocationNbr(locationNbr,materialId);
 		int aQty = model.getAvailableQty();
 		model.setAvailableQty(aQty + inventory.getResetQty());
+		LocalDateTime dateTime=LocalDateTime.now();
+		  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		  String format = dateTime.format(formatter);
 		model.setResetQty(inventory.getResetQty()+model.getResetQty());
-		model.setUpdateDateTime(LocalDateTime.now());
+		model.setResetDateTime(format);
 		return repo.save(model);
 	}
 
@@ -118,6 +122,10 @@ public class InventoryServiceImpl implements InventoryService {
 		  
 		  inv.setOrderQty(inv.getOrderQty()-orderQty);
 		  inv.setAvailableQty(inv.getAvailableQty()+orderQty);
+		  LocalDateTime dateTime=LocalDateTime.now();
+		  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		  String format = dateTime.format(formatter);
+		  inv.setUpdateDateTime(format);
 		  InventoryModel invavail = repo.save(inv);
 		  if(invavail == null)
 		  	{

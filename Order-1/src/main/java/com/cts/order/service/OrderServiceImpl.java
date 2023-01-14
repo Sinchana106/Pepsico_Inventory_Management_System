@@ -1,6 +1,7 @@
 package com.cts.order.service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +49,10 @@ public class OrderServiceImpl implements OrderService {
 		model.setMaterialId(materialId);
 		model.setMaterialName(inventoryModel.getMaterialName());
 		model.setOrderQty(orderQty);
-		model.setOrderDateTime(LocalDateTime.now());
+		LocalDateTime dateTime=LocalDateTime.now();
+		  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		  String format = dateTime.format(formatter);
+		model.setOrderDateTime(format);
 		model.setOrderStatus("InProgress");
 		inventoryFeign.updateAvailbaleqty(locationNbr, materialId, orderQty);
 		n++;
@@ -105,7 +109,10 @@ public class OrderServiceImpl implements OrderService {
 				model.setOrderStatus("Canceled");
 				cancelOrder(response.getOrderId());
 			}
-			model.setOrderDateTime(LocalDateTime.now());
+			LocalDateTime dateTime=LocalDateTime.now();
+			  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+			  String format = dateTime.format(formatter);
+			model.setOrderDateTime(format);
 			
 			return repo.save(model);
 		}
