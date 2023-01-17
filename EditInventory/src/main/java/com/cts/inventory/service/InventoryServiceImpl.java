@@ -46,6 +46,10 @@ public class InventoryServiceImpl implements InventoryService {
 		model.setId(randomGenerator());
 		model.setOrderQty(0);
 		model.setAvailableQty(model.getResetQty() - model.getOrderQty());
+		LocalDateTime dateTime=LocalDateTime.now();
+		  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		  String format = dateTime.format(formatter);
+		  model.setResetDateTime(format);
 		return repo.save(model);
 	}
 
@@ -64,6 +68,8 @@ public class InventoryServiceImpl implements InventoryService {
 		  String format = dateTime.format(formatter);
 		model.setResetQty(inventory.getResetQty()+model.getResetQty());
 		model.setResetDateTime(format);
+		
+		  model.setUpdateDateTime(format);
 		return repo.save(model);
 	}
 
@@ -93,7 +99,10 @@ public class InventoryServiceImpl implements InventoryService {
 	public boolean updateOrderAndAvailableQuantity(int locationNbr,String materialId,int orderQty) {
 		System.out.println("in to this method");
 		  InventoryModel inv = repo.findByLocationNbrAndMaterialId(locationNbr, materialId);
-		  
+		  LocalDateTime dateTime=LocalDateTime.now();
+		  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		  String format = dateTime.format(formatter);
+		  inv.setUpdateDateTime(format);
 		  inv.setOrderQty(inv.getOrderQty()+orderQty);
 		  inv.setAvailableQty(inv.getAvailableQty()-orderQty);
 		  InventoryModel invavail = repo.save(inv);
