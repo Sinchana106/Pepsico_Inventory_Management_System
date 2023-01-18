@@ -25,6 +25,7 @@ import com.cts.order.service.OrderServiceImpl;
 public class OrderController {
 
 	int orderQty=0;
+	
 	@Autowired
 	private OrderServiceImpl service;
 
@@ -39,7 +40,8 @@ public class OrderController {
 	public OrderModel saveOrder(@PathVariable int locationNbr, @PathVariable String materialId,
 			@RequestBody OrderModel orderModel) {
 		orderQty=orderModel.getOrderQty();
-		OrderModel order= service.saveOrder(locationNbr, materialId, orderQty);
+		String userId=orderModel.getUserId();
+		OrderModel order= service.saveOrder(locationNbr, materialId, orderQty,userId);
 		if(order!=null) {
 			return order;
 		}
@@ -66,6 +68,11 @@ public class OrderController {
 	public OrderModel resetInventory( @PathVariable String orderId,
 			@RequestBody OrderModel response) throws Exception {
 		return service.processOrder(orderId, response);
+	}
+	@GetMapping("/getorder/{userId}")
+	@ResponseStatus(HttpStatus.OK)
+	public List<OrderModel> getOrderByUserId(@PathVariable String userId) {
+		return service.fetchAllOrderByUserId(userId);
 	}
 	
 	@GetMapping("/order/{orderId}")

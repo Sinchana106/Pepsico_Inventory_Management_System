@@ -12,7 +12,7 @@ public interface OrderService {
 
 	public List<OrderModel> fetchAllOrderByUserId(String userId);
 
-	public OrderModel saveOrder(int locationNbr, String materialId, int orderQty);
+	public OrderModel saveOrder(int locationNbr, String materialId, int orderQty,String userId);
 
 	public List<OrderModel> fetchAllPendingOrders();
 

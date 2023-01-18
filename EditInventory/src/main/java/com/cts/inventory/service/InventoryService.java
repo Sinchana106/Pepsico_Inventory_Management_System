@@ -17,4 +17,5 @@ public interface InventoryService {
 	public boolean updateOrderAndAvailableQuantity(int locationNbr,String materialId,int orderQty);
 	public boolean isInventoryPresent(int locationNbr,String materialId);
 	public boolean updateOrderAndAvailableQuantityAfterCancelation(int locationNbr,String materialId,int orderQty);
+	
 }

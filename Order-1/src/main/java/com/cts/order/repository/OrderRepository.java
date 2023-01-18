@@ -21,4 +21,7 @@ public interface OrderRepository extends CouchbaseRepository<OrderModel, String>
 	
 	@View
 	public OrderModel findByLocationNbrAndMaterialIdAndOrderId(int locationNbr,String materialId,String orderId);
+	
+	@View
+	public List<OrderModel> findByUserId(String userId);
 }

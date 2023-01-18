@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public OrderModel saveOrder(int locationNbr,String materialId,int orderQty) {
+	public OrderModel saveOrder(int locationNbr,String materialId,int orderQty,String userId) {
 		String id="O-"+n;
 		while(true) {
 			
@@ -49,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
 		model.setMaterialId(materialId);
 		model.setMaterialName(inventoryModel.getMaterialName());
 		model.setOrderQty(orderQty);
+		model.setUserId(userId);
 		LocalDateTime dateTime=LocalDateTime.now();
 		  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		  String format = dateTime.format(formatter);
@@ -68,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<OrderModel> fetchAllOrderByUserId(String userId) {
-		return null;
+		return repo.findByUserId(userId);
 	}
 
 	@Override
