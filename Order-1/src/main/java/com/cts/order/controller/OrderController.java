@@ -20,8 +20,8 @@ import com.cts.order.service.OrderServiceImpl;
 @CrossOrigin("*")
 public class OrderController {
 
-	int orderQty=0;
-	
+	int orderQty = 0;
+
 	@Autowired
 	private OrderServiceImpl service;
 
@@ -35,13 +35,12 @@ public class OrderController {
 	@PostMapping("/saveOrder/{locationNbr}/{materialId}")
 	public OrderModel saveOrder(@PathVariable int locationNbr, @PathVariable String materialId,
 			@RequestBody OrderModel orderModel) {
-		orderQty=orderModel.getOrderQty();
-		String userId=orderModel.getUserId();
-		OrderModel order= service.saveOrder(locationNbr, materialId, orderQty,userId);
-		if(order!=null) {
+		orderQty = orderModel.getOrderQty();
+		String userId = orderModel.getUserId();
+		OrderModel order = service.saveOrder(locationNbr, materialId, orderQty, userId);
+		if (order != null) {
 			return order;
-		}
-		else {
+		} else {
 			return null;
 		}
 
@@ -58,24 +57,24 @@ public class OrderController {
 	public List<OrderModel> getAllCompletedOrdersWithinThreeHours() {
 		return service.fetchAllCompletedOrdersWithinThreeHours();
 	}
-	
+
 	@PutMapping("processOrder/{orderId}")
 	@ResponseStatus(HttpStatus.OK)
-	public OrderModel processOrderStatus( @PathVariable String orderId,
-			@RequestBody OrderModel response) throws Exception {
+	public OrderModel processOrderStatus(@PathVariable String orderId, @RequestBody OrderModel response)
+			throws Exception {
 		return service.processOrder(orderId, response);
 	}
+
 	@GetMapping("/getorder/{userId}")
 	@ResponseStatus(HttpStatus.OK)
 	public List<OrderModel> getOrderByUserId(@PathVariable String userId) {
 		return service.fetchAllOrderByUserId(userId);
 	}
-	
+
 	@GetMapping("/order/{orderId}")
 	@ResponseStatus(HttpStatus.OK)
 	public OrderModel getOrderByOrderId(@PathVariable String orderId) {
 		return service.fetchOrderByOrderId(orderId);
 	}
-	
-	
+
 }

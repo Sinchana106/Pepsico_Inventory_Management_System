@@ -127,7 +127,7 @@ public class OrderControllerTest {
 		OrderModel orderModel = new OrderModel("O-3", "18-01-2023 16:02:53", 111111, "1234567890", "Lays", 10,
 				"Canceled", "Ritu123");
 		when(serviceImpl.fetchOrderByOrderId("O-3")).thenReturn(orderModel);
-		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/getorder/Ritu123");
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/getorder/O-3");
 		ResultActions perform = mockMvc.perform(requestBuilder);
 		MvcResult result = perform.andReturn();
 		MockHttpServletResponse response = result.getResponse();
@@ -171,8 +171,7 @@ public class OrderControllerTest {
 	 */
 	@Test
 	public void testProcessOrderStatus_Completed() throws Exception {
-		OrderModel respondCancel = new OrderModel("O-6", "20-01-2023 19:45:53", 111111, "1234567890", "Lays", 10,
-				"Canceled", "Ritu123");
+
 		OrderModel respondCompleted = new OrderModel("O-6", "20-01-2023 19:45:53", 111111, "1234567890", "Lays", 10,
 				"Completed", "Ritu123");
 		// completed
@@ -209,4 +208,6 @@ public class OrderControllerTest {
 		int status = response.getStatus();
 		assertEquals(200, status);
 	}
+	
+	
 }

@@ -1,14 +1,5 @@
 package com.cts.order.pojo;
 
-import java.time.LocalDateTime;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
-import org.springframework.data.couchbase.core.mapping.Field;
-
 public class InventoryModel {
 	private int id;
 	
@@ -72,6 +63,10 @@ public class InventoryModel {
 		return resetDateTime;
 	}
 
+	public InventoryModel() {
+		super();
+	}
+
 	public void setResetDateTime(String resetDateTime) {
 		this.resetDateTime = resetDateTime;
 	}
@@ -90,6 +85,20 @@ public class InventoryModel {
 
 	public void setAvailableQty(int availableQty) {
 		this.availableQty = availableQty;
+	}
+
+	public InventoryModel(int id, int locationNbr, String materialId, String materialName, int resetQty,
+			String resetDateTime, String updateDateTime, int availableQty, int orderQty) {
+		super();
+		this.id = id;
+		this.locationNbr = locationNbr;
+		this.materialId = materialId;
+		this.materialName = materialName;
+		this.resetQty = resetQty;
+		this.resetDateTime = resetDateTime;
+		this.updateDateTime = updateDateTime;
+		this.availableQty = availableQty;
+		this.orderQty = orderQty;
 	}
 
 	public int getOrderQty() {

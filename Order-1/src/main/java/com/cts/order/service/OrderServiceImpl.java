@@ -12,59 +12,60 @@ import com.cts.order.feign.InventoryFeign;
 import com.cts.order.model.OrderModel;
 import com.cts.order.pojo.InventoryModel;
 import com.cts.order.repository.OrderRepository;
+
 @Service
 public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderRepository repo;
-	
+
 	@Autowired
 	private InventoryFeign inventoryFeign;
-	
-	int n=1;
+
+	int n = 1;
+
 	@Override
 	public List<OrderModel> fetchAllOrder() {
 		return repo.findAll();
 	}
 
 	@Override
-	public OrderModel saveOrder(int locationNbr,String materialId,int orderQty,String userId) {
-		String id="O-"+n;
-		while(true) {
-			
-			Optional<OrderModel> order=repo.findById(id);
-			if(order.isPresent()) {
+	public OrderModel saveOrder(int locationNbr, String materialId, int orderQty, String userId) {
+		String id = "O-" + n;
+		while (true) {
+
+			Optional<OrderModel> order = repo.findById(id);
+			if (order.isPresent()) {
 				n++;
-				id="O-"+n;
-			}
-			else {
+				id = "O-" + n;
+			} else {
 				break;
 			}
 		}
-		InventoryModel inventoryModel=inventoryFeign.getByLocationNbrAndMaterialId(locationNbr,materialId);
-		OrderModel model =new OrderModel();
-		if(inventoryModel.getAvailableQty()>=orderQty) {
-		model.setOrderId(id);
-		model.setLocationNbr(locationNbr);
-		model.setMaterialId(materialId);
-		model.setMaterialName(inventoryModel.getMaterialName());
-		model.setOrderQty(orderQty);
-		model.setUserId(userId);
-		LocalDateTime dateTime=LocalDateTime.now();
-		  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-		  String format = dateTime.format(formatter);
-		model.setOrderDateTime(format);
-		model.setOrderStatus("InProgress");
-		inventoryFeign.updateAvailbaleqty(locationNbr, materialId, orderQty);
-		n++;
-		System.out.println(model.toString());
-		
-		return repo.save(model);
-		}
-		else {
+		InventoryModel inventoryModel = inventoryFeign.getByLocationNbrAndMaterialId(locationNbr, materialId);
+		OrderModel model = new OrderModel();
+		if (inventoryModel.getAvailableQty() >= orderQty) {
+			model.setOrderId(id);
+			model.setLocationNbr(locationNbr);
+			model.setMaterialId(materialId);
+			model.setMaterialName(inventoryModel.getMaterialName());
+			model.setOrderQty(orderQty);
+			model.setUserId(userId);
+			LocalDateTime dateTime = LocalDateTime.now();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+			String format = dateTime.format(formatter);
+			model.setOrderDateTime(format);
+			model.setOrderStatus("InProgress");
+			inventoryFeign.updateAvailbaleqty(locationNbr, materialId, orderQty);
+			n++;
+			System.out.println(model.toString());
+
+			repo.save(model);
+			return model;
+		} else {
 			return null;
 		}
-		
+
 	}
 
 	@Override
@@ -88,49 +89,29 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderModel> fetchTop5OrdersWithinThreeHours() {
-		return null;
-	}
-
-	@Override
-	public OrderModel sendOrderQuantityToInventoryTable(int locationNbr, String materialId, int orderQty) {
-		return null;
-	}
-
-
-	
-	@Override
 	public OrderModel processOrder(String orderId, OrderModel response) {
-			OrderModel model=repo.findById(orderId).get();
-			if(response.getOrderStatus().equalsIgnoreCase("Completed")) {
-				System.out.println("Completed block:"+response.getOrderStatus());
+		OrderModel model = repo.findById(orderId).get();
+		if (response.getOrderStatus().equalsIgnoreCase("Completed")) {
+			System.out.println("Completed block:" + response.getOrderStatus());
 			model.setOrderStatus("Completed");
-			}
-			else {
-				System.out.println("Canceled block:"+response.getOrderStatus());
-				model.setOrderStatus("Canceled");
-				cancelOrder(response.getOrderId());
-			}
-			LocalDateTime dateTime=LocalDateTime.now();
-			  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-			  String format = dateTime.format(formatter);
-			model.setOrderDateTime(format);
-			
-			return repo.save(model);
+		} else {
+			System.out.println("Canceled block:" + response.getOrderStatus());
+			model.setOrderStatus("Canceled");
+			cancelOrder(response.getOrderId());
 		}
+		LocalDateTime dateTime = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		String format = dateTime.format(formatter);
+		model.setOrderDateTime(format);
 
-	@Override
-	public OrderModel fetchOrderByLocationNbrMaterialIdOrderId(int locationNbr, String materialId, String orderId) {
-		return repo.findByLocationNbrAndMaterialIdAndOrderId(locationNbr, materialId, orderId);
+		repo.save(model);
+		return model;
 	}
 
 	@Override
 	public void cancelOrder(String id) {
-		   OrderModel ord=repo.findById(id).get();
-//	        
-		   inventoryFeign.updateAvailbaleqtyAfterCancel(ord.getLocationNbr(), ord.getMaterialId(), ord.getOrderQty());
+		OrderModel ord = repo.findById(id).get();
+		inventoryFeign.updateAvailbaleqtyAfterCancel(ord.getLocationNbr(), ord.getMaterialId(), ord.getOrderQty());
 	}
-	
-
 
 }

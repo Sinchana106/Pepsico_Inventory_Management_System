@@ -1,6 +1,6 @@
 package com.cts.order.pojo;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -13,16 +13,23 @@ public class InventoryModelTest {
 
 	@BeforeAll
 	public static void setUp() {
-		model = new InventoryModel();
+		model=new InventoryModel();
 		model.setId(1);
 		model.setLocationNbr(111111);
 		model.setMaterialId("1234567890");
 		model.setMaterialName("Lays");
-		model.setMaterialId("1234567890");
 		model.setResetQty(100);
 		model.setResetDateTime("19-01-2023 19:04:06");
-		model.setUpdateDateTime("19-01-2023 19:04:06");
+		model.setUpdateDateTime( "19-01-2023 19:04:06");
 		model.setAvailableQty(100);
+		model.setOrderQty(0);
+	}
+	
+	//To Test Parameterized Constructor
+	@Test
+	public void testParameterizedConstructor() {
+		InventoryModel inventoryModel=new InventoryModel(1, 111111, "1234567890", "Lays", 10, null, null, 10, 0);
+		assertEquals("Lays", inventoryModel.getMaterialName());
 	}
 
 	// To test Inventory Id
@@ -49,7 +56,7 @@ public class InventoryModelTest {
 	// To test MaterialName
 	@Test
 	void testMaterialName() {
-		model.setMaterialName("Lays");
+		
 		assertEquals("Lays", model.getMaterialName());
 	}
 
