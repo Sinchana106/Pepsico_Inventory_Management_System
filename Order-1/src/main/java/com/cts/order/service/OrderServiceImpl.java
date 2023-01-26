@@ -84,7 +84,6 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public OrderModel fetchOrderByOrderId(String orderId) {
-		OrderModel order=new OrderModel();
 		return repo.findById(orderId).get();
 	}
 

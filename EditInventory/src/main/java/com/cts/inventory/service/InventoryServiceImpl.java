@@ -9,9 +9,7 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cts.inventory.feign.OrderFeign;
 import com.cts.inventory.model.InventoryModel;
-import com.cts.inventory.pojo.OrderModel;
 import com.cts.inventory.repository.InventoryRepository;
 
 @Service
@@ -19,9 +17,9 @@ public class InventoryServiceImpl implements InventoryService {
 
 	@Autowired
 	private InventoryRepository repo;
-	
+
 	@Autowired
-	//private OrderFeign orderFeign;
+	// private OrderFeign orderFeign;
 
 	public int randomGenerator() {
 		Random random = new Random();
@@ -46,11 +44,12 @@ public class InventoryServiceImpl implements InventoryService {
 		model.setId(randomGenerator());
 		model.setOrderQty(0);
 		model.setAvailableQty(model.getResetQty() - model.getOrderQty());
-		LocalDateTime dateTime=LocalDateTime.now();
-		  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-		  String format = dateTime.format(formatter);
-		  model.setResetDateTime(format);
-		return repo.save(model);
+		LocalDateTime dateTime = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		String format = dateTime.format(formatter);
+		model.setResetDateTime(format);
+		 repo.save(model);
+		 return model;
 	}
 
 	@Override
@@ -59,29 +58,32 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	public InventoryModel resetInventoryQty( int locationNbr,String materialId,InventoryModel inventory) throws Exception {
-		InventoryModel model=getInventoryByMaterialIdandLocationNbr(locationNbr,materialId);
+	public InventoryModel resetInventoryQty(int locationNbr, String materialId, InventoryModel inventory)
+			throws Exception {
+		InventoryModel model = getInventoryByLocationNbrandMaterialId(locationNbr, materialId);
 		int aQty = model.getAvailableQty();
 		model.setAvailableQty(aQty + inventory.getResetQty());
-		LocalDateTime dateTime=LocalDateTime.now();
-		  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-		  String format = dateTime.format(formatter);
-		model.setResetQty(inventory.getResetQty()+model.getResetQty());
+		LocalDateTime dateTime = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		String format = dateTime.format(formatter);
+		model.setResetQty(inventory.getResetQty() + model.getResetQty());
 		model.setResetDateTime(format);
-		
-		  model.setUpdateDateTime(format);
-		return repo.save(model);
+
+		model.setUpdateDateTime(format);
+		 repo.save(model);
+		 return model;
 	}
 
 	@Override
 	public String deleteInventoryById(int id) {
 		repo.deleteById(id);
-		return "Inventory with materialId " + id + " deleted!";
+		return "Inventory with Id " + id + " deleted!";
 	}
 
 	@Override
-	public InventoryModel getInventoryByMaterialIdandLocationNbr(int locationNbr, String materialId) {
-		return repo.findByLocationNbrAndMaterialId(locationNbr, materialId);
+	public InventoryModel getInventoryByLocationNbrandMaterialId(int locationNbr, String materialId) {
+		InventoryModel inventoryModel= repo.findByLocationNbrAndMaterialId(locationNbr, materialId);
+		return inventoryModel;
 
 	}
 
@@ -96,30 +98,28 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	@Override
-	public boolean updateOrderAndAvailableQuantity(int locationNbr,String materialId,int orderQty) {
+	public boolean updateOrderAndAvailableQuantity(int locationNbr, String materialId, int orderQty) {
 		System.out.println("in to this method");
-		  InventoryModel inv = repo.findByLocationNbrAndMaterialId(locationNbr, materialId);
-		  LocalDateTime dateTime=LocalDateTime.now();
-		  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-		  String format = dateTime.format(formatter);
-		  inv.setUpdateDateTime(format);
-		  inv.setOrderQty(inv.getOrderQty()+orderQty);
-		  inv.setAvailableQty(inv.getAvailableQty()-orderQty);
-		  InventoryModel invavail = repo.save(inv);
-		  if(invavail == null)
-		  	{
-
-		  			return false;
-		  	}
-		  		return true;
+		InventoryModel inv = repo.findByLocationNbrAndMaterialId(locationNbr, materialId);
+		if(inv==null) {
+			return false;
 		}
+		LocalDateTime dateTime = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		String format = dateTime.format(formatter);
+		inv.setUpdateDateTime(format);
+		inv.setOrderQty(inv.getOrderQty() + orderQty);
+		inv.setAvailableQty(inv.getAvailableQty() - orderQty);
+		 repo.save(inv);
+		return true;
+	}
 
 	@Override
 	public boolean isInventoryPresent(int locationNbr, String materialId) {
-		boolean isPresent=false;
-		InventoryModel inventoryModel=repo.findByLocationNbrAndMaterialId(locationNbr, materialId);
-		if(inventoryModel!=null) {
-			isPresent=true;
+		boolean isPresent = false;
+		InventoryModel inventoryModel = repo.findByLocationNbrAndMaterialId(locationNbr, materialId);
+		if (inventoryModel != null) {
+			isPresent = true;
 		}
 		return isPresent;
 	}
@@ -127,24 +127,19 @@ public class InventoryServiceImpl implements InventoryService {
 	@Override
 	public boolean updateOrderAndAvailableQuantityAfterCancelation(int locationNbr, String materialId, int orderQty) {
 		System.out.println("in to this method");
-		  InventoryModel inv = repo.findByLocationNbrAndMaterialId(locationNbr, materialId);
-		  
-		  inv.setOrderQty(inv.getOrderQty()-orderQty);
-		  inv.setAvailableQty(inv.getAvailableQty()+orderQty);
-		  LocalDateTime dateTime=LocalDateTime.now();
-		  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-		  String format = dateTime.format(formatter);
-		  inv.setUpdateDateTime(format);
-		  InventoryModel invavail = repo.save(inv);
-		  if(invavail == null)
-		  	{
-
-		  			return false;
-		  	}
-		  		return true;
+		InventoryModel inv = repo.findByLocationNbrAndMaterialId(locationNbr, materialId);
+		if(inv==null) {
+			return false;
 		}
-	
-
-	
+		inv.setOrderQty(inv.getOrderQty() - orderQty);
+		inv.setAvailableQty(inv.getAvailableQty() + orderQty);
+		LocalDateTime dateTime = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		String format = dateTime.format(formatter);
+		inv.setUpdateDateTime(format);
+		 repo.save(inv);
+		
+		return true;
+	}
 
 }

@@ -1,7 +1,5 @@
 package com.cts.inventory.model;
 
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

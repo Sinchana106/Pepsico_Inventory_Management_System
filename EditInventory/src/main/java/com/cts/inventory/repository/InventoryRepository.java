@@ -12,6 +12,7 @@ import com.cts.inventory.model.InventoryModel;
 public interface InventoryRepository extends CouchbaseRepository<InventoryModel, Integer> {
 	@View
 	List<InventoryModel> findByLocationNbr(int LocationNbr);
+
 	@View
-	InventoryModel findByLocationNbrAndMaterialId(int LocationNbr,String MaterialId);
+	InventoryModel findByLocationNbrAndMaterialId(int LocationNbr, String MaterialId);
 }

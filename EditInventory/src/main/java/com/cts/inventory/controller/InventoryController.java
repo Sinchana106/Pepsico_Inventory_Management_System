@@ -33,20 +33,22 @@ public class InventoryController {
 
 	@PostMapping("/saveInventory")
 	@ResponseStatus(HttpStatus.CREATED)
-	public InventoryModel saveInventory(@RequestBody @Valid InventoryModel model) throws InternalServerException, InventoryAlreadyExist {
+	public InventoryModel saveInventory(@RequestBody @Valid InventoryModel model)
+			throws InternalServerException, InventoryAlreadyExist {
 
 		try {
-			int locatioNbr=model.getLocationNbr();
-			String materialId=model.getMaterialId();
-			if(service.isInventoryPresent(locatioNbr, materialId)) {
+			int locatioNbr = model.getLocationNbr();
+			String materialId = model.getMaterialId();
+			if (service.isInventoryPresent(locatioNbr, materialId)) {
 				throw new InventoryAlreadyExist("Inventory with same Location number and Material Id already added");
-			}else {
-				LocalDateTime dateTime=LocalDateTime.now();
-				  DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-				  String format = dateTime.format(formatter);
-			model.setResetDateTime(format);
-			service.saveInventory(model);
-			return model;}
+			} else {
+				LocalDateTime dateTime = LocalDateTime.now();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+				String format = dateTime.format(formatter);
+				model.setResetDateTime(format);
+				service.saveInventory(model);
+				return model;
+			}
 		} catch (InternalServerError | NullPointerException e) {
 			throw new InternalServerException("Database connectivity Issue");
 		}
@@ -57,14 +59,14 @@ public class InventoryController {
 	public List<InventoryModel> getAllInventory() {
 		return service.getAllInventory();
 	}
+
 	@GetMapping("/getInventory/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public InventoryModel getInventoryById(@PathVariable int id) {
 		return service.getInventoryById(id).get();
 	}
-	
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("delete/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public String deleteInventory(@PathVariable int id) {
 		return service.deleteInventoryById(id);
@@ -75,39 +77,43 @@ public class InventoryController {
 	public List<InventoryModel> getByLocationNbr(@PathVariable int locationNbr) {
 		return service.getInventoryByLocationNbr(locationNbr);
 	}
-	
+
 	@GetMapping("resetInventory/{locationNbr}/{materialId}")
 	@ResponseStatus(HttpStatus.OK)
-	public InventoryModel getByLocationNbrAndMaterialId(@PathVariable int locationNbr, @PathVariable String materialId) {
-		return service.getInventoryByMaterialIdandLocationNbr(locationNbr, materialId);
+	public InventoryModel getByLocationNbrAndMaterialId(@PathVariable int locationNbr,
+			@PathVariable String materialId) {
+		return service.getInventoryByLocationNbrandMaterialId(locationNbr, materialId);
 	}
-	
+
 	@PutMapping("resetInventory/{locationNbr}/{materialId}")
 	@ResponseStatus(HttpStatus.OK)
 	public InventoryModel resetInventory(@PathVariable int locationNbr, @PathVariable String materialId,
 			@RequestBody InventoryModel response) throws Exception {
 		return service.resetInventoryQty(locationNbr, materialId, response);
 	}
-	
+
 	@PutMapping("updateAvailableQty/{locationNbr}/{materialId}")
 	@ResponseStatus(HttpStatus.OK)
-	 public boolean updateAvailbaleqty(@PathVariable int locationNbr, @PathVariable String materialId, @RequestParam("quantity") int qnty) {
-	  
-	  	return service.updateOrderAndAvailableQuantity(locationNbr, materialId, qnty);
+	public boolean updateAvailbaleqty(@PathVariable int locationNbr, @PathVariable String materialId,
+			@RequestParam("quantity") int qnty) {
+
+		return service.updateOrderAndAvailableQuantity(locationNbr, materialId, qnty);
 
 	}
-	
+
 	@PutMapping("updateAvailableQtyAfterCancel/{locationNbr}/{materialId}")
 	@ResponseStatus(HttpStatus.OK)
-	 public boolean updateAvailbaleqtyAfterCancel(@PathVariable int locationNbr, @PathVariable String materialId, @RequestParam("quantity") int qnty) {
-	  
-	  	return service.updateOrderAndAvailableQuantityAfterCancelation(locationNbr, materialId, qnty);
+	public boolean updateAvailbaleqtyAfterCancel(@PathVariable int locationNbr, @PathVariable String materialId,
+			@RequestParam("quantity") int qnty) {
+
+		return service.updateOrderAndAvailableQuantityAfterCancelation(locationNbr, materialId, qnty);
 
 	}
-	
+
 	@GetMapping("search/{locationNbr}/{materialId}")
 	@ResponseStatus(HttpStatus.OK)
-	public InventoryModel searchByLocationNbrAndMaterialId(@PathVariable int locationNbr,@PathVariable String materialId) {
-		return service.getInventoryByMaterialIdandLocationNbr(locationNbr, materialId);
+	public InventoryModel searchByLocationNbrAndMaterialId(@PathVariable int locationNbr,
+			@PathVariable String materialId) {
+		return service.getInventoryByLocationNbrandMaterialId(locationNbr, materialId);
 	}
 }
